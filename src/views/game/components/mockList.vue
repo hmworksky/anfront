@@ -340,14 +340,15 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['序号', '接口名称', '接口地址', '项目编号', 'socketIO路由', '请求协议', '请求方法', '应用名']
-        const filterVal = ['id', 'name', 'path', 'project', 'route', 'request_protocol', 'request_method', 'app_name']
+        const tHeader = ['序号', '接口名称', '接口地址', '请求类型', '超时时间', '请求协议', '返回值']
+        const filterVal = ['id', 'name', 'url_info', 'request_type', 'timeout', 'request_protocol', 'return_value']
         const data = this.formatJson(filterVal, this.list)
         excel.export_json_to_excel({
           header: tHeader,
           data,
           filename: 'table-list'
         })
+        this.getList()
         this.downloadLoading = false
       })
     },
@@ -359,13 +360,9 @@ export default {
           const temp_data = v[j]
           v[j] = getOptionsKeyValue(protocolOptions, temp_data)
           return v[j]
-        } else if (j === 'request_method') {
+        } else if (j === 'request_type') {
           const temp_data = v[j]
-          v[j] = getOptionsKeyValue(methodOptions, temp_data)
-          return v[j]
-        } else if (j === 'app_name') {
-          const temp_data = v[j]
-          v[j] = getOptionsKeyValue(appOptions, temp_data)
+          v[j] = getOptionsKeyValue(requestTypeOptions, temp_data)
           return v[j]
         } else {
           return v[j]
